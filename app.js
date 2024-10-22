@@ -14,6 +14,8 @@ document.getElementById('pencil').addEventListener('click', () => tool = 'pencil
 document.getElementById('pen').addEventListener('click', () => tool = 'pen');
 document.getElementById('eraser').addEventListener('click', () => tool = 'eraser');
 document.getElementById('text').addEventListener('click', () => tool = 'text');
+document.getElementById('save').addEventListener('click', saveCanvas);
+document.getElementById('load').addEventListener('change', loadCanvas);
 
 // Start drawing
 function startDrawing(e){
@@ -55,4 +57,33 @@ function stopDrawing() {
     if (!isDrawing) return;
     isDrawing = false;
     ctx.closePath();
+}
+
+// Save the current canvas content
+function saveCanvas() {
+    const dataURL = canvas.toDataURL('image/png'); // Base64-encoded PNG image
+    const link = document.createElement('a'); // <a> link
+    link.href = dataURL;
+    link.download = 'canvas-drawing.png'; // File name
+    link.click();
+}
+
+// Load an image into the canvas
+function loadCanvas(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const img = new Image();
+    const reader = new FileReader();
+
+    // Once file is read, set the image source
+    reader.onload = function(e) {
+        img.src = e.target.result;
+        img.onload = function() {
+            // Clear the canvas and draw the loaded image
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas. height);
+        }
+    };
+    reader.readAsDataURL(file);
 }
