@@ -5,6 +5,7 @@ let tool = 'pencil'; // Default tool
 let nc = false; //noClick boolean
 
 
+
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
@@ -72,12 +73,15 @@ function draw(e) {
     if(!isDrawing) return; 
 
     if(tool === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out'; //This erases, instead of drawing white
         ctx.strokeStyle = '#ffffff'; // Eraser color (white)
         ctx.lineWidth = 20;
     } else if(tool === 'pen') {
+        ctx.globalCompositeOperation = 'source-over'; //standard drawing mode
         ctx.strokeStyle = '#0000ff'; // Pen color (blue)
         ctx.lineWidth = 3;
     } else {
+        ctx.globalCompositeOperation = 'source-over'; //standard drawing mode
         ctx.strokeStyle = '#000000'; // Pencil color (black)
         ctx.lineWidth = 1;
     }
