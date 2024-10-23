@@ -5,7 +5,6 @@ let tool = 'pencil'; // Default tool
 let nc = false; //noClick boolean
 
 
-
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
@@ -26,13 +25,13 @@ function noClick(e){
     if(nc){
         console.log("nc true");
         canvas.removeEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.removeEventListener('mouseup', stopDrawing);
         document.addEventListener('keydown', shiftPressed);
         document.addEventListener('keyup', shiftReleased);
     }
     else{
         console.log("nc false");
-        canvas.removeEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
         document.removeEventListener('keydown', shiftPressed);
         document.removeEventListener('keyup', shiftReleased);
