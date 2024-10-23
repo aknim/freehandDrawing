@@ -2,6 +2,7 @@ const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
 let isDrawing = false;
 let tool = 'pencil'; // Default tool
+let nc = false; //noClick boolean
 
 
 canvas.addEventListener('mousedown', startDrawing);
@@ -10,12 +11,46 @@ canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
 
 // Handle tool selection
+document.getElementById('noClick').addEventListener('click', noClick);
 document.getElementById('pencil').addEventListener('click', () => tool = 'pencil');
 document.getElementById('pen').addEventListener('click', () => tool = 'pen');
 document.getElementById('eraser').addEventListener('click', () => tool = 'eraser');
 document.getElementById('text').addEventListener('click', () => tool = 'text');
 document.getElementById('save').addEventListener('click', saveCanvas);
 document.getElementById('load').addEventListener('change', loadCanvas);
+
+function noClick(e){
+    console.log("called");
+    nc = !nc;
+    if(nc){
+        console.log("nc true");
+        canvas.removeEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        document.addEventListener('keydown', shiftPressed);
+        document.addEventListener('keyup', shiftReleased);
+    }
+    else{
+        console.log("nc false");
+        canvas.removeEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        document.removeEventListener('keydown', shiftPressed);
+        document.removeEventListener('keyup', shiftReleased);
+    }
+}
+
+
+
+function shiftPressed(e) {
+    if (e.key === 'Shift') {
+        startDrawing(e);
+    }
+};
+
+function shiftReleased(e) {
+    if (e.key === 'Shift') {
+        stopDrawing(e);
+    }
+};
 
 // Start drawing
 function startDrawing(e){
